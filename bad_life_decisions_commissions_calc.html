@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Commission Price Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Commission Price Calculator</h2>
+        <label for="wordCount">Number of Words:</label>
+        <input type="number" id="wordCount" placeholder="Enter word count">
+        
+        <label for="fandom">Fandom Type:</label>
+        <select id="fandom">
+            <option value="0">Known Fandom</option>
+            <option value="0.005">Unknown Fandom (Sources Given) - 0.5¢/word</option>
+            <option value="0.01">Unknown Fandom - 1¢/word</option>
+        </select>
+        
+        <label for="nsfw">NSFW Content:</label>
+        <select id="nsfw">
+            <option value="0">No</option>
+            <option value="0.005">Yes (0.5¢/word)</option>
+        </select>
+        
+        <label for="express">Express Delivery (Days Faster than Max):</label>
+        <input type="number" id="express" placeholder="Enter days" min="0">
+        
+        <button onclick="calculatePrice()">Calculate Price</button>
+        
+        <h3>Total Cost: <span id="totalPrice">$0.00</span></h3>
+    </div>
+
+    <script>
+        function calculatePrice() {
+            let words = parseInt(document.getElementById("wordCount").value) || 0;
+            let fandomFee = parseFloat(document.getElementById("fandom").value);
+            let nsfwFee = parseFloat(document.getElementById("nsfw").value);
+            let expressDays = parseInt(document.getElementById("express").value) || 0;
+            
+            let basePrice = words <= 2000 ? words * 0.01 : (2000 * 0.01) + ((words - 2000) * 0.008);
+            let additionalFees = words * (fandomFee + nsfwFee);
+            let expressFee = expressDays * 1;
+            
+            let totalCost = basePrice + additionalFees + expressFee;
+            
+            document.getElementById("totalPrice").innerText = "$" + totalCost.toFixed(2);
+        }
+    </script>
+</body>
+</html>
